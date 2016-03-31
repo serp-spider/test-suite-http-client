@@ -26,7 +26,7 @@
 
   "require": {
     "php": ">=5.5.9",
-    "serps/serps": "*",
+    "serps/core": "*",
     "zendframework/zend-diactoros": ">=1"
   },
 
