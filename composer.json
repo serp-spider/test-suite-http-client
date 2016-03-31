@@ -1,0 +1,42 @@
+{
+
+  "name": "serps/http-client-test-suite",
+  "description": "Test suite for SERPS http clients",
+  "type": "library",
+  "keywords": [],
+  "homepage": "https://github.com/serps/test-suite-http-client",
+  "license": "Fair",
+
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+
+
+  "authors": [
+    {
+      "name": "Soufiane GHZAL",
+      "homepage": "https://github.com/gsouf"
+    }
+  ],
+
+  "autoload":{
+    "psr-4" : {
+      "Serps\\Test\\httpClient\\": "src/"
+    }
+  },
+
+  "require": {
+    "php": ">=5.5.9",
+    "serps/serps": "*",
+    "zendframework/zend-diactoros": ">=1"
+  },
+
+  "require-dev":{
+    "phpunit/phpunit": "4.1.2",
+    "squizlabs/php_codesniffer": "~2.5"
+  },
+
+  "scripts": {
+    "csfix": "yes 2>/dev/null | test/bin/phpcbf.bash",
+    "cscheck": "test/bin/phpcs.bash emacs"
+  }
+}
