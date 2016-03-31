@@ -20,7 +20,7 @@
 
   "autoload":{
     "psr-4" : {
-      "Serps\\Test\\httpClient\\": "src/"
+      "Serps\\Test\\HttpClient\\": "src/"
     }
   },
 

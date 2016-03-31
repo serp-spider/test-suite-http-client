@@ -11,7 +11,7 @@ use Serps\Core\Http\HttpClientInterface;
 use Serps\Core\Http\SearchEngineResponse;
 use Zend\Diactoros\Request;
 
-abstract class HttpTestsCase extends \PHPUnit_Framework_TestCase
+abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
 {
 
     /**
