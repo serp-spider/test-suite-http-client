@@ -80,4 +80,25 @@ abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $cookies[0]->getValue());
         $this->assertEquals('httpbin.org', $cookies[0]->getDomain());
     }
+    public function testPostData(){
+        $client = $this->getHttpClient();
+        $request = new Request(
+            'http://httpbin.org/post',
+            'POST',
+            'php://temp',
+            [
+                'User-Agent' => 'test-user-agent'
+            ]
+        );
+        $request->getBody()->write('foo=bar');
+        $response = $client->sendRequest($request);
+        $this->assertInstanceOf(SearchEngineResponse::class, $response);
+        $responseData = json_decode($response->getPageContent(), true);
+        $this->assertEquals(200, $response->getHttpResponseStatus());
+        $this->assertEquals('test-user-agent', $responseData['headers']['User-Agent']);
+        $this->assertEquals('http://httpbin.org/post', $response->getEffectiveUrl()->buildUrl());
+
+        $this->assertCount(1, $responseData['form']);
+        $this->assertEquals('bar', $responseData['form']['foo']);
+    }
 }
