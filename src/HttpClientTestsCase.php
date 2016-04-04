@@ -32,6 +32,15 @@ abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test-user-agent', $responseData['headers']['User-Agent']);
         $this->assertEquals('http://httpbin.org/get', $response->getEffectiveUrl()->buildUrl());
     }
+    public function testUserAgentLowerCase()
+    {
+        $client = $this->getHttpClient();
+        $request = new Request('http://httpbin.org/get', 'GET');
+        $request = $request->withHeader('user-agent', 'test-user-agent');
+        $response = $client->sendRequest($request);
+        $responseData = json_decode($response->getPageContent(), true);
+        $this->assertEquals('test-user-agent', $responseData['headers']['User-Agent']);
+    }
     public function testRedirectRequest()
     {
         $client = $this->getHttpClient();
