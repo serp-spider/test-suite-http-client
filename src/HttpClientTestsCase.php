@@ -89,7 +89,8 @@ abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $cookies[0]->getValue());
         $this->assertEquals('httpbin.org', $cookies[0]->getDomain());
     }
-    public function testPostData(){
+    public function testPostData()
+    {
         $client = $this->getHttpClient();
         $request = new Request(
             'http://httpbin.org/post',
@@ -109,5 +110,20 @@ abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $responseData['form']);
         $this->assertEquals('bar', $responseData['form']['foo']);
+    }
+    public function testProxy()
+    {
+        $client = $this->getHttpClient();
+        $request = new Request('http://httpbin.org/ip', 'GET');
+
+        $proxyIp = "76.74.137.70";
+        $proxyPort = "80";
+        $proxy = new Proxy($proxyIp, $proxyPort);
+
+        $response = $client->sendRequest($request, $proxy);
+        
+        $responseData = json_decode($response->getPageContent(), true);
+        $this->assertEquals(200, $response->getHttpResponseStatus());
+        $this->assertEquals($proxyIp, $responseData['origin']);
     }
 }
