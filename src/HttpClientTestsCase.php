@@ -10,6 +10,7 @@ use Serps\Core\Cookie\Cookie;
 use Serps\Core\Http\HttpClientInterface;
 use Serps\Core\Http\SearchEngineResponse;
 use Zend\Diactoros\Request;
+use Serps\Core\Http\Proxy;
 
 abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
 {
