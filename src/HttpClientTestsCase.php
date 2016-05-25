@@ -23,7 +23,7 @@ abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$process = new Process('exec php ' . __DIR__ . '/../resources/server.php');
+        self::$process = new Process('exec php ' . __DIR__ . '/../resources/proxyserver.php');
         self::$process->start();
     }
 
