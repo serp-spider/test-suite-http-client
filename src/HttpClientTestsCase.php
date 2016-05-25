@@ -9,11 +9,24 @@ use Serps\Core\Cookie\ArrayCookieJar;
 use Serps\Core\Cookie\Cookie;
 use Serps\Core\Http\HttpClientInterface;
 use Serps\Core\Http\SearchEngineResponse;
+use Symfony\Component\Process\Process;
 use Zend\Diactoros\Request;
 use Serps\Core\Http\Proxy;
 
 abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @var Process
+     */
+    private static $process;
+
+    public static function setUpBeforeClass()
+    {
+        self::$process = new Process('exec php ' . __DIR__ . '/../resources/server.php');
+        self::$process->start();
+    }
+
 
     /**
      * @return HttpClientInterface
@@ -112,19 +125,53 @@ abstract class HttpClientTestsCase extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $responseData['form']);
         $this->assertEquals('bar', $responseData['form']['foo']);
     }
-    public function testProxy()
+
+    public function testHttpProxy()
     {
         $client = $this->getHttpClient();
-        $request = new Request('http://httpbin.org/ip', 'GET');
+        $request = new Request('http://httpbin.org/get', 'GET');
 
-        $proxyIp = "76.74.137.70";
-        $proxyPort = "80";
-        $proxy = new Proxy($proxyIp, $proxyPort);
+        $proxyIp = "127.0.0.1";
+        $proxyPort = "20106";
+        $proxy = new Proxy($proxyIp, $proxyPort, null, null, 'http');
 
         $response = $client->sendRequest($request, $proxy);
-        
-        $responseData = json_decode($response->getPageContent(), true);
-        $this->assertEquals(200, $response->getHttpResponseStatus());
-        $this->assertEquals($proxyIp, $responseData['origin']);
+
+        $data = json_decode($response->getPageContent(), true);
+
+        $this->assertEquals('http://httpbin.org/get', $data['url']);
+        $this->assertEquals('http', $data['headers']['X-Proxy']);
+    }
+
+    public function testSocks4Proxy()
+    {
+        $client = $this->getHttpClient();
+        $request = new Request('http://httpbin.org/get', 'GET');
+
+        $proxyIp = "127.0.0.1";
+        $proxyPort = "20104";
+        $proxy = new Proxy($proxyIp, $proxyPort, null, null, 'socks4');
+
+        $response = $client->sendRequest($request, $proxy);
+
+        $data = json_decode($response->getPageContent(), true);
+
+        $this->assertEquals('http://httpbin.org/get', $data['url']);
+    }
+
+    public function testSocks5Proxy()
+    {
+        $client = $this->getHttpClient();
+        $request = new Request('http://httpbin.org/get', 'GET');
+
+        $proxyIp = "127.0.0.1";
+        $proxyPort = "20105";
+        $proxy = new Proxy($proxyIp, $proxyPort, null, null, 'socks5');
+
+        $response = $client->sendRequest($request, $proxy);
+
+        $data = json_decode($response->getPageContent(), true);
+
+        $this->assertEquals('http://httpbin.org/get', $data['url']);
     }
 }

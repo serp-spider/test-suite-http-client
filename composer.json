@@ -27,7 +27,9 @@
   "require": {
     "php": ">=5.5.9",
     "serps/core": "*",
-    "zendframework/zend-diactoros": ">=1"
+    "zendframework/zend-diactoros": ">=1",
+    "serps/proxy-server": "*",
+    "symfony/process": "^3.0"
   },
 
   "require-dev":{
