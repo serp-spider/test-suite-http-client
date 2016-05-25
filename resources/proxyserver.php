@@ -2,8 +2,11 @@
 
 use Serps\ProxyServer\ProxyServer;
 
-require __DIR__ . '/../vendor/autoload.php';
-
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+}else{
+    require __DIR__ . '/../../../autoload.php';
+}
 // CREATE SERVER
 
 $server = new ProxyServer();
